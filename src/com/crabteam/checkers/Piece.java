@@ -6,6 +6,7 @@ public class Piece{
 	
 	private PApplet p;
 	private String color;
+	private boolean king;
 	private int x;
 	private int y;
 	private PImage sprite;
@@ -13,31 +14,34 @@ public class Piece{
 	public Piece(PApplet p, String c, int xPos, int yPos) {
 		this.p = p;
 		this.color = c;
+		this.king = false;
 		this.x = xPos;
 		this.y = yPos;
-		
-		if (color.equals("red")) sprite = p.loadImage("src/com/crabteam/checkers/sprites/red_piece.png");
-		else if (color.equals("white")) sprite =  p.loadImage("src/com/crabteam/checkers/sprites/white_piece.png");
+
+		sprite = p.loadImage("src/com/crabteam/checkers/sprites/" + this.color + "_piece.png");
 	}
 	
 	public int getX() { return x; }
-	
 	public int getY() { return y; }
-	
+	public int[] getBoardLocation() { return new int[] {this.x*80+90, this.y*80+190}; }
 	public String getColor() { return color; }
+	public boolean isKing() { return king; }
+	
+	public void setKing() {
+		king = true;
+		sprite = p.loadImage("src/com/crabteam/checkers/sprites/king_" + this.color + "_piece.png");
+		p.imageMode(PConstants.CENTER);
+		p.image(sprite, this.getBoardLocation()[0], this.getBoardLocation()[1], 80, 80);
+	}
 	
 	public void hide() {
 		p.fill(0, 0, 0);
-		p.circle(this.getBoardLocation()[0], this.getBoardLocation()[1], 79);
+		p.circle(this.getBoardLocation()[0], this.getBoardLocation()[1], 70);
 	}
 	
 	public void show() {
 		p.imageMode(PConstants.CENTER);
 		p.image(sprite, this.getBoardLocation()[0], this.getBoardLocation()[1], 80, 80);
-	}
-	
-	public int[] getBoardLocation() {
-		return new int[] {this.x*80+40, this.y*80+140};
 	}
 	
 	public void move(Arrow arrow) {
